@@ -1,3 +1,5 @@
+/* @import url('https://fonts.googleapis.com/css?family=Montserrat:400,600'); */
+
 .vertical-nav {
     min-width: 12rem;
     width: 12rem;
@@ -74,6 +76,85 @@
     font-family: cursive;
 }
 
-/* body{
+.about{
+    height: 300px;
+    background-color: rgb(36, 109, 173);
+    
+}
+
+.pending-issue{
+    height: 500px;
+    background-image: url("../Drawable/division-pictures/issue-pc.png");
+    background-size: 30%;
+    background-repeat: no-repeat;
+    background-position: right;
+}
+
+.solved-issue{
+    height: 500px;
+    background-color: #022fad;
+    background-image: url("../Drawable/division-pictures/man_and_women.png");
+    background-size: 30%;
+    background-repeat: no-repeat;
+    background-position: left;
+    color: azure;
+}
+
+.new-issue{
+    height: 600px;
+    background-color: #d9ff00;
+    background-image: url("../Drawable/division-pictures/two_man_one_women.png");
+    background-size: 50%;
+    background-repeat: no-repeat;
+    background-position: right;
+
+    color: azure;
+}
+
+.new-issue-form-holder{
+    margin-left: 15rem;
+    border: #ad0502;
+    border-radius: 5px;
+    border-style: dashed;
+    padding: 30px;
+    background-color: #3669d8;
+}
+
+body{
     overflow-x: hidden
-} */
+}
+
+.logout{
+    margin-top: 320px;
+    margin-left: 40px;
+}
+
+
+.gradient-custom-2 {
+    /* fallback for old browsers */
+    background: #fccb90;
+
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: -webkit-linear-gradient(to right, #24c2ee, #3669d8, #36ddc1, #6e45b4);
+
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: linear-gradient(to right, #24c2ee, #3669d8, #36ddb9, #6e45b4);
+    }
+
+    @media (min-width: 768px) {
+    .gradient-form {
+    height: 100vh !important;
+    }
+    }
+    @media (min-width: 769px) {
+    .gradient-custom-2 {
+    border-top-right-radius: .3rem;
+    border-bottom-right-radius: .3rem;
+    }
+}
+
+
+.active {
+    color: lime; 
+    font-weight: 600;
+  }
