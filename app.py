@@ -94,6 +94,7 @@ def register():
 if __name__ == '__main__':
     # from livereload import Server
     # server = Server(app.wsgi_app)
-    app.run(debug=True)
+    # app.run(debug=True)
+    app.run()
     # server.serve(host = '0.0.0.0',port=5000)
     
