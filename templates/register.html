@@ -8,19 +8,43 @@
         <script src="{{ url_for('static', filename='/node_modules/jquery/dist/jquery.js') }}"></script>
         <script src="{{ url_for('static', filename='/node_modules/bootstrap/dist/js/bootstrap.js') }}"></script>
         <link rel="stylesheet" href="{{ url_for('static', filename='/styles/style-entrypoint.css') }}">
-
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
         <script>
             function showPas(password) {
                 // toggle the type attribute
                 const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
                 password.setAttribute('type', type);
             };
+            
+            $(document).ready(function(){
+            // Prepare the preview for profile picture
+                $("#profilepic").change(function(){
+                    readURL(this);
+                });
+            });
+            function readURL(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $('#wizardPicturePreview').attr('src', e.target.result).fadeIn('slow');
+                    }
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
         </script>
 
     </head>
-    <body style="overflow:hidden">
+    <body style="overflow:hidden;">
         <!-- Section: Design Block -->
-        <section class="background-radial-gradient overflow-hidden">
+        
+        <section class="background-radial-gradient overflow-hidden" style="position: relative;">
+            {% if msg|length >0 %}
+                <div class="alert">
+                    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+                    <strong>Registration error!</strong> Please Try again after chainging some fields.
+                </div>
+            {% endif %}
             <div class="container px-4 py-5 px-md-5 text-center text-lg-start my-5">
             <div class="row gx-lg-5 align-items-center mb-5">
                 <div class="col-lg-6 mb-5 mb-lg-0" style="z-index: 10">
@@ -41,57 +65,69 @@
                 <div id="radius-shape-2" class="position-absolute shadow-5-strong"></div>
         
                 <div class="card bg-glass">
-                    <div class="card-body px-4 py-5 px-md-5">
+                    <div class="card-body px-4 py-1 px-md-5">
                     <form action="{{ url_for('register') }}" method="post">
+                        <center>
+                            <div class="container mb-4">
+                                <div class="picture-container">
+                                    <div class="picture">
+                                        <img src="{{url_for('static',filename='/Drawable/man.png')}}" class="picture-src" id="wizardPicturePreview" title="">
+                                        <input type="file" id="profilepic" name="profilepic" class="form-control">
+                                    </div>
+                                     <h6 class="">Choose Picture</h6>
+                                </div>
+                            </div>
+                        </center>
+                        
                         <!-- 2 column grid layout with text inputs for the first and last names -->
                         <div class="row">
                         <div class="col-md-6 mb-4">
                             <div class="form-outline">
-                            <input type="text" id="first_name" name="first_name" class="form-control" placeholder="First name"/>
+                            <input type="text" id="first_name" name="first_name" class="form-control" placeholder="First name" required/>
                             </div>
                         </div>
                         
                         <div class="col-md-6 mb-4">
                             <div class="form-outline">
-                            <input type="text" id="last_name" name="last_name" class="form-control" placeholder="Last name"/>
+                            <input type="text" id="last_name" name="last_name" class="form-control" placeholder="Last name" required/>
                             </div>
                         </div>
                         
 
                         <div class="col-md-6 mb-4">
                             <div class="form-outline">
-                            <input type="text" id="user_name" name="user_name" class="form-control" placeholder="User name"/>
+                            <input type="text" id="user_name" name="user_name" class="form-control" placeholder="User name" required/>
                             </div>
                         </div>
 
                         <div class="col-md-6 mb-4">
                             <div class="form-outline">
-                            <input type="text" id="pno" name="pno" class="form-control" placeholder="Phone Number (+91)"/>
+                            <input type="text" id="pno" name="pno" class="form-control" placeholder="Phone Number (+91)" required/>
                             </div>
                         </div>
         
                         <!-- Email input -->
                         <div class="form-outline mb-4">
-                        <input type="email" id="email_id" name="email_id" class="form-control" placeholder="Email address"/>
+                        <input type="email" id="email_id" name="email_id" class="form-control" placeholder="Email address" required/>
                         </div>
         
                         <!-- Password input -->
-                        <div class="form-outline mb-5">
-                            <input type="password" id="password" name="password" class="form-control" onfocus="showPas(this)" placeholder="Password"/>                                  
+                        <div class="form-outline mb-4">
+                            <input type="password" id="password" name="password" class="form-control" onfocus="showPas(this)" placeholder="Password" required/>                                  
                         </div>
         
         
                         <!-- Submit button -->
-                        <input type="submit" class="btn btn-primary btn-block gradient-custom-2 mb-4" value="Sign Up">
+                        <input type="submit" class="btn btn-primary gradient-custom-2 mb-5" value="Sign Up">
                         
         
                         <!-- Register buttons -->
-                        <div class="text-center">
+                        <!-- <div class="text-center">
                         <p>or sign up with:</p>
         
-                        <button type="button" class="btn btn-link btn-floating btn-lg mx-auto mb-1">
+                        <button type="button" class="btn btn-link btn-floating btn-lg ">
                             <i class="fab fa-google fa-lg"></i>
-                        </button>
+                        </button> -->
         
                         </div>
                     </form>

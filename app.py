@@ -17,12 +17,14 @@ app.config['MYSQL_DB'] = 'customer_care_registry'
 mysql = MySQL(app)
 
 @app.route('/')
+
+
 @app.route('/index')
 def landing_page():
-    if(len(session)):
+    if(len(session)>0):
         return render_template("index.html")
     else:
-        redirect('/login')
+        redirect('/userlogin')
 
 @app.route('/logout')
 def logout():
@@ -35,9 +37,32 @@ def logout():
     
     return redirect(url_for('login'))
 
+@app.route('/adminlogin',methods=['GET','POST'])
+def loginAdmin():
+    msg = ''
+    # print("came in")
+    if request.method == 'POST' and 'email_id' in request.form and 'password' in request.form:
+        # print(request.form)
+        email_id = request.form['email_id']
+        password = request.form['password']
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute('SELECT * FROM user_accounts WHERE email_id LIKE %s AND password LIKE %s', [email_id, password])
+        account = cursor.fetchone()
+        # print(account)
+        if account:
+            session['loggedin'] = True
+            session['session_id'] = hash(account['email_id']+str(hash(account['password']+str(time.time()))))
+            session['email_id'] = account['email_id']
+            session['user_name'] = account['user_name']
+            session['first_name'] = account['first_name']
+            session['last_name'] = account['last_name']
+            return redirect('index')
+        else:
+            msg = 'Incorrect username / password !'
+    return render_template('login.html', msg = msg)
 
-@app.route('/login', methods =['GET', 'POST'])
-def login():
+@app.route('/userlogin', methods =['GET', 'POST'])
+def loginUser():
     msg = ''
     # print("came in")
     if request.method == 'POST' and 'email_id' in request.form and 'password' in request.form:
@@ -90,11 +115,21 @@ def register():
         msg = 'Please fill out the form !'
     return render_template('register.html', msg = msg)
 
+@app.route('/register-issue',methods=['POST'])
+def registerIssue():
+    if request.method == 'POST' and 'title' in request.form and 'description' in request.form:
+        title = request.form['title']
+        desciption = request.form['description']
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute('INSERT INTO issue_db(email_id,title,description) VALUES(%s,%s,%s)',(session['email_id'],title,desciption))
+        mysql.connection.commit()
+        return 'Issue ticket created successfully'
+
 # app.run(use_reloader=True)
 if __name__ == '__main__':
     # from livereload import Server
     # server = Server(app.wsgi_app)
-    # app.run(debug=True)
+    app.run(debug=True)
     app.run()
     # server.serve(host = '0.0.0.0',port=5000)
     
