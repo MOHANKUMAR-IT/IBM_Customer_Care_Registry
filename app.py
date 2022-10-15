@@ -1,3 +1,5 @@
+from crypt import methods
+import email
 from tkinter.messagebox import NO
 from flask import Flask, render_template, request, redirect, url_for, session
 from flask_mysqldb import MySQL
@@ -17,14 +19,14 @@ app.config['MYSQL_DB'] = 'customer_care_registry'
 mysql = MySQL(app)
 
 @app.route('/')
-
-
 @app.route('/index')
 def landing_page():
     if(len(session)>0):
         return render_template("index.html")
     else:
-        redirect('/userlogin')
+        redirect('/login')
+
+
 
 @app.route('/logout')
 def logout():
@@ -61,8 +63,8 @@ def loginAdmin():
             msg = 'Incorrect username / password !'
     return render_template('login.html', msg = msg)
 
-@app.route('/userlogin', methods =['GET', 'POST'])
-def loginUser():
+@app.route('/login', methods =['GET', 'POST'])
+def login():
     msg = ''
     # print("came in")
     if request.method == 'POST' and 'email_id' in request.form and 'password' in request.form:
@@ -124,6 +126,22 @@ def registerIssue():
         cursor.execute('INSERT INTO issue_db(email_id,title,description) VALUES(%s,%s,%s)',(session['email_id'],title,desciption))
         mysql.connection.commit()
         return 'Issue ticket created successfully'
+
+
+@app.route('/new-agent-register',methods=['POST'])
+def newAgentRegister():
+    if 'name' in request.form and 'email_id' in request.form and 'password' in request.form:
+        name = request.form['name']
+        email_id = request.form['email_id']
+        password = request.form['password']
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute('INSERT INTO agent_accounts(name,email_id,password) VALUES(%s,%s,%s)',(name,email_id,password))
+        mysql.connection.commit()
+        return 'New Agent Created Successfully'
+    return 'Error creating new agent'
+@app.route('/admin',methods=['POST','GET'])
+def admin():
+    return render_template('admin.html',name='mohan')
 
 # app.run(use_reloader=True)
 if __name__ == '__main__':

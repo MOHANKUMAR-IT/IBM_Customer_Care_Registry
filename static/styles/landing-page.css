@@ -114,6 +114,7 @@
 .new-issue-form-holder{
     margin-left: 15rem;
     border: #ad0502;
+    position: absolute;
     border-radius: 5px;
     border-style: dashed;
     padding: 30px;
@@ -158,3 +159,28 @@ body{
     color: lime; 
     font-weight: 600;
   }
+
+
+  .alert {
+    padding: 20px;
+    background-color: #46faa6;
+    color: rgb(0, 0, 0);
+    position: relative;
+    display: none;
+    float:inline-start;
+}
+
+.closebtn {
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.closebtn:hover {
+    color: black;
+}

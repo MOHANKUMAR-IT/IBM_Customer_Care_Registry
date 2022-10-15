@@ -34,13 +34,16 @@
                     title:$("#title").val(),
                     description:$("#description").val()
                 },
-                success:function()
+                success:function(response)
                 {
-                alert('saved');
-                }
+                    document.getElementById("message").innerHTML = response;
+                    document.getElementById("alert").style.display = "block";
+                }   
             })
          });
+         
     </script>
+
 </head>
 <body>
     
@@ -126,7 +129,7 @@
                     <thead class="thead-dark">
                       <tr>
                         {% for header in pending_issues_headings %}
-                            <th scope="col">#</th>
+                            <th scope="col">{% header %}</th>
                         {% endfor %}
                       </tr>
                     </thead>
@@ -190,6 +193,10 @@
                 {% endif %}
             </div>
             <div class="new-issue d-flex align-items-center justify-content-start" id="new-issue">
+                <div class="alert" id="alert">
+                    <span class="closebtn" onclick="this.parentElement.style.display='none';" >&times;</span> 
+                    <i id="message">response message</i> 
+                </div>
                 <div class="new-issue-form-holder">
                     <span class="jumbotron">
                         <h3>
@@ -198,6 +205,7 @@
                         </h3>
                     </span>
                     <form class="" id="issue-form" method="post">
+                        
                         <!-- Title input -->
                         <div class="form-outline mb-4">
                           <input type="text" name="title" id="title" class="form-control" required/>
