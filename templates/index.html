@@ -18,10 +18,17 @@
     <script>
         $(function() {
         // Sidebar toggle behavior
-        $('#sidebarCollapse').on('click', function() {
-            $('#sidebar, #content').toggleClass('active');
+            $('#sidebarCollapse').on('click', function() {
+                $('#sidebar, #content').toggleClass('active');
+            });
         });
-        });
+
+        function signOut() {
+            var auth2 = gapi.auth2.getAuthInstance();
+            auth2.signOut().then(function () {
+            console.log('User signed out.');
+            });
+        }
 
         $(document).on('submit','#issue-form',function(e)
                    {
@@ -43,6 +50,7 @@
          });
          
     </script>
+    
 
 </head>
 <body>
@@ -129,7 +137,7 @@
                     <thead class="thead-dark">
                       <tr>
                         {% for header in pending_issues_headings %}
-                            <th scope="col">{% header %}</th>
+                            <th scope="col">{{ header }}</th>
                         {% endfor %}
                       </tr>
                     </thead>
@@ -138,7 +146,7 @@
                             <tr>
                                 <th scope="row">{{forloop.counter}}</th>
                                 {% for cell in row %}
-                                    <td>{cell}</td>
+                                    <td>{{cell}}</td>
                                 {% endfor %}
                             </tr>
                         {% endfor %}
@@ -164,7 +172,7 @@
                     <thead class="thead-dark">
                       <tr>
                         {% for header in pending_issues_headings %}
-                            <th scope="col">#</th>
+                            <th scope="col">{{header}}</th>
                         {% endfor %}
                       </tr>
                     </thead>
@@ -173,7 +181,7 @@
                             <tr>
                                 <th scope="row">{{forloop.counter}}</th>
                                 {% for cell in row %}
-                                    <td>{cell}</td>
+                                    <td>{{cell}}</td>
                                 {% endfor %}
                             </tr>
                         {% endfor %}
@@ -193,10 +201,15 @@
                 {% endif %}
             </div>
             <div class="new-issue d-flex align-items-center justify-content-start" id="new-issue">
+                
+                <!-- ---------------------------------Alert Box---------------------------- -->
                 <div class="alert" id="alert">
                     <span class="closebtn" onclick="this.parentElement.style.display='none';" >&times;</span> 
                     <i id="message">response message</i> 
                 </div>
+
+
+
                 <div class="new-issue-form-holder">
                     <span class="jumbotron">
                         <h3>
@@ -228,7 +241,7 @@
             </div>
             
             <div class="services" id="services">
-
+                
             </div>
             
             
@@ -238,24 +251,8 @@
     <!-- Landing Page Banner End -->
     <script>
         
-        function signOut() {
-            var auth2 = gapi.auth2.getAuthInstance();
-            auth2.signOut().then(function () {
-            console.log('User signed out.');
-            });
-        }
+        
 
-        form.addEventListener('submit', function(event) {
-            event.preventDefault();    // prevent page from refreshing
-            const formData = new FormData(form);  // grab the data inside the form fields
-            fetch('/', {   // assuming the backend is hosted on the same server
-                method: 'POST',
-                body: formData,
-            }).then(function(response) {
-                // do something with the response if needed.
-                // If you want the table to be built only after the backend handles the request and replies, call buildTable() here.
-            });
-        });
     </script>
 </body>
 </html>

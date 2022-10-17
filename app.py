@@ -1,4 +1,4 @@
-from crypt import methods
+
 import email
 from tkinter.messagebox import NO
 from flask import Flask, render_template, request, redirect, url_for, session
@@ -128,6 +128,20 @@ def registerIssue():
         return 'Issue ticket created successfully'
 
 
+
+
+# for admin controls-------------------------------------------------------------------
+
+@app.route('/admin',methods=['POST','GET'])
+def admin():
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cursor.execute('SELECT agent_id,email_id,solved_issues,pending_issues,profilepic,name FROM agent_accounts')
+    account = cursor.fetchall()
+    cursor.execute('SELECT * FROM issue_db where solved=0')
+    issues = cursor.fetchall()
+    return render_template('admin.html',agents=account,name="mohan",issues=issues)
+
+
 @app.route('/new-agent-register',methods=['POST'])
 def newAgentRegister():
     if 'name' in request.form and 'email_id' in request.form and 'password' in request.form:
@@ -139,9 +153,19 @@ def newAgentRegister():
         mysql.connection.commit()
         return 'New Agent Created Successfully'
     return 'Error creating new agent'
-@app.route('/admin',methods=['POST','GET'])
-def admin():
-    return render_template('admin.html',name='mohan')
+
+@app.route('/assign-job-to-agent',methods=['POST'])
+def assignJobToAgent():
+    if 'agent_id' in request.form and 'ticket' in request.form:
+        agent_id = request.form['agent_id']
+        ticket = request.form['ticket']
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute('UPDATE issue_db SET agent_id=%s AND pending_issues=pending_issues+1 WHERE ticket=%s',(agent_id,ticket))
+        mysql.connection.commit()
+        return 'New Job Assigned to agent %s',agent_id
+    return 'Error Assigning Job to Agent'
+
+
 
 # app.run(use_reloader=True)
 if __name__ == '__main__':

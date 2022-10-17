@@ -10,13 +10,14 @@
     <script src="{{ url_for('static', filename='/node_modules/jquery/dist/jquery.js') }}"></script>
     <script src="{{ url_for('static', filename='/node_modules/bootstrap/dist/js/bootstrap.js') }}"></script>
     <script src="{{ url_for('static',filename='/javascript/navlink-activator.js')}}"></script>
+    
     <script>
          $(document).on('submit','#new-agent-form',function(e)
                    {
             e.preventDefault();
             $.ajax({
                 type:'POST',
-                url:'/register-agent',
+                url:'/new-agent-register',
                 data:{
                     name:$("#name").val(),
                     email_id:$("#email").val(),
@@ -29,14 +30,67 @@
                 }   
             })
          });
+        function assignJob(ticket,title)
+        {
+            var agent_id = $('#'+title).val();    
+            $.ajax({
+                type:'POST',
+                url:'/assign-job-to-agent',
+                data:{
+                    agent_id:agent_id,
+                    ticket:ticket,
+                },
+                success:function(response)
+                {
+                    document.getElementById("job-message").innerHTML = response;
+                    document.getElementById("job-alert").style.display = "block";
+                }   
+            })
+         };
     </script>
+    <style>
+      .active {
+          color: lime; 
+          font-weight: 600;
+      }
+
+
+      .alert {
+          padding: 20px;
+          background-color: #46faa6;
+          color: rgb(0, 0, 0);
+          position: relative;
+          display: none;
+          float:inline-start;
+      }
+
+      .closebtn {
+          margin-left: 15px;
+          color: white;
+          font-weight: bold;
+          float: right;
+          font-size: 22px;
+          line-height: 20px;
+          cursor: pointer;
+          transition: 0.3s;
+      }
+
+      .closebtn:hover {
+          color: black;
+      }
+  </style>
 </head>
 <body>
-    <div class="container">
+    <div class="container-fluid">
         <h2 class="jumbotron">Administrator: {{ name }}</h2>
-        <div >
+        <div style="background-color:#70847b;height: auto;">
             <h3>Add new Agents</h3>
-            <section class="vh-100">
+             <!-- ---------------------------------Alert Box---------------------------- -->
+            <div class="alert" id="alert">
+              <span class="closebtn" onclick="this.parentElement.style.display='none';" >&times;</span> 
+              <i id="message">response message</i> 
+             </div>
+            <section class="vh-60">
                 <div class="container h-80">
                   <div class="row d-flex justify-content-center align-items-center h-100">
                     <div class="col-lg-12 col-xl-11">
@@ -45,7 +99,7 @@
                           <div class="row justify-content-center align-items-center">
                             <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
                             
-                              <form class="mx-1 mx-md-4" action="{{ url_for('newAgentRegister') }}" method="post">
+                              <form class="mx-1 mx-md-4" id="new-agent-form" action="{{ url_for('newAgentRegister') }}" method="post">
               
                                 <div class="d-flex flex-row align-items-center mb-4">
                                   <i class="fas fa-user fa-lg me-3 fa-fw"></i>
@@ -89,32 +143,73 @@
         </div>
 
         <!-- All Agents -->
-        <div>
+        <div style="background-color:#d646fa;height: auto;" class="d-flex  justify-content-center">
             Agents
             <div class="card-deck">
+              <div class="row">
                 {% for agent in agents %}
-                <div class="card">
-                  <img class="card-img-top" src={{ agent["profilepic"] }} alt="Card image cap">
+                <div class="col">
+                <div class="card text-white bg-secondary" style="width: 18rem;">
+                  <img class="card-img-top" src="{{ url_for('static',filename='/Drawable/man.png') }}" style="width:100px;height:auto;" alt="Card image cap">
                   <div class="card-body">
-                    <h5 class="card-title">{{ agent["agent_id"] }}</h5>
+                    <h5 class="card-title">Agent:{{ agent["agent_id"] }}</h5>
                     <p class="card-text">
                         Name:{{ agent["name"] }}<br>
                         Solved:{{ agent["solved_issues"] }}<br>
                         Pending:{{ agent["pending_issues"] }}<br>
                         Pno:{{ agent["pno"]}} <br>
                         Email Id:{{ agent["email_id"] }}<br>
-
                     </p>
                   </div>
                   <div class="card-footer">
-                    <small class="text-muted">Last updated 3 mins ago</small>
+                    <a href="#" class="btn btn-primary">Remove Agent</a>
+                    <a hred="#" class="btn btn-primary">Email Agent</a>
                   </div>
                 </div>  
+              </div>
                 {% endfor %}
+              </div>
             </div>
         </div>
 
 
-    </div>
+        <!-- All Issue Created -->
+        <div style="background-color:#e2fa46;height: auto;" class="d-flex  justify-content-center">
+          Issue Tickets
+            <!-- ---------------------------------Alert Box---------------------------- -->
+            <div class="alert" id="job-alert">
+              <span class="closebtn" onclick="this.parentElement.style.display='none';" >&times;</span> 
+              <i id="job-message">response message</i> 
+             </div>
+          <div class="card-deck">
+            <div class="row">
+            {% for issue in issues %}
+            <div class="col">
+            <div class="card" style="width: 18rem;">
+              <div class="card-body">
+                <h5 class="card-title">
+                  Ticket:{{ issue['ticket'] }}<br>
+                  Title:{{ issue['title'] }}
+                </h5>
+                <p class="card-text">{{ issue['description'] }}</p>
+                
+              </div>
+              <div class="card-footer">
+                
+                <div class="mb-3">
+                  Agent id
+                  <input type="text" class="form-control" id={{ issue['title'] }} placeholder={{ issue['agent_id'] }}>
+                </div>     
+                <button onclick=assignJob({{ issue['ticket']|safe }},'{{ issue['title'] }}') class="btn btn-primary">Assign Job</button>
+              </div>
+            </div>
+          </div>
+            {% endfor %}  
+          </div>
+          </div>
+        
+        </div>
+        </div>
+    
 </body>
 </html>
