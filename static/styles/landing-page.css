@@ -51,6 +51,10 @@
     width: 100%;
 }
 
+td,th{
+    margin: 0;
+}
+
 .introduction{
     height: 30rem;
     
@@ -102,7 +106,6 @@
 
 .new-issue{
     height: 600px;
-    background-color: #d9ff00;
     background-image: url("../Drawable/division-pictures/two_man_one_women.png");
     background-size: 50%;
     background-repeat: no-repeat;

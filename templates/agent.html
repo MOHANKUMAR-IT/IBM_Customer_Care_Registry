@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TCE Desk Agent</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='/node_modules/bootstrap/dist/css/bootstrap.css') }}">
+    <script src="https://kit.fontawesome.com/07972bca60.js" crossorigin="anonymous"></script>
+    <script src="{{ url_for('static', filename='/node_modules/jquery/dist/jquery.js') }}"></script>
+    <script src="{{ url_for('static', filename='/node_modules/bootstrap/dist/js/bootstrap.js') }}"></script>
+
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+     -->
+    
+     <script>
+        
+         function completedTask(ticket,agent_id)
+        {
+            $.ajax({
+                type:'PUT',
+                url:'/update-task',
+                data:{
+                    ticket:ticket,
+                    agent_id:agent_id
+                },
+                success:function(response)
+                {
+                    document.getElementById("job-message").innerHTML = response;
+                    document.getElementById("job-alert").style.display = "block";
+                }   
+            })
+         };
+
+         function solvetask(ticket){
+            $.ajax({
+                type:'PUT',
+                url:'/solve-task',
+                dataType: "json",
+                data:{
+                    ticket:ticket
+                },
+                success:function(response)
+                {
+                    
+                },
+                error:function(response) {
+                    console.log("Error: "+JSON.stringify(response));
+                }
+            });
+         }
+     </script>
+</head>
+<body>
+    <div class="container-fluid" style="background-image: conic-gradient(rgb(13, 0, 255), rgb(8, 48, 79), rgb(0, 36, 128), blue, black);height:25rem;max-width:100%;margin-bottom:10px">
+        <img style="float:right;" src="{{url_for('static',filename='/Drawable/division-pictures/agent.png')}}" height="400px">
+    </div>
+    <!-- Jobs Available-------------------------------------------------- -->
+    <div class="container d-flex justify-content-center align-items-center" style="background-color: rgb(0,0,0);min-height: 15rem;border-radius: 20px;">
+        
+          
+                {% if job_list %}      
+                <div class="card-deck" >
+                    <div class="row">        
+                    {% for job in job_list %}
+                        <div class="col">
+                            <div class="card" style="width: 18rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        Ticket:{{ job['TICKET'] }}<br>
+                                        Title:{{ job['TITLE'] }}
+                                    </h5>
+                                    <p class="card-text">{{ job['DESCRIPTION'] }}</p>
+                                </div>
+                                <div class="progress" style="height: 20px;">
+                                    <div class="progress-bar bg-success" role="progressbar" aria-valuenow={{ job['PROGRESS'] }} aria-valuemin="0" aria-valuemax="100" style="width:{{ job['PROGRESS'] }}">
+                                        {{ job['PROGRESS'] }}
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <input type="checkbox" class="btn-check" onchange=completedTask({{job['TICKET']|safe}},{{job['AGENT_ID']}}) id={{job['TICKET']}} name={{job['TICKET']}} >
+                                    <label class="btn btn-outline-primary" for={{job['TICKET']}}>Solved</label>
+                                    <a class="btn btn-primary"  href={{'/solve-task/'+job['TICKET']|safe}}>Solve</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}  
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="display-1" style="color: white;">No tasks available :)</div>
+                {% endif %}
+            
+    </div>
+    <div>
+
+    </div>
+</body>
+</html>

@@ -42,7 +42,7 @@
             {% if msg|length >0 %}
                 <div class="alert">
                     <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
-                    <strong>Registration error!</strong> Please Try again after chainging some fields.
+                    {{msg}}
                 </div>
             {% endif %}
             <div class="container px-4 py-5 px-md-5 text-center text-lg-start my-5">

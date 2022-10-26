@@ -49,6 +49,7 @@
             })
          });
          
+
     </script>
     
 
@@ -123,20 +124,20 @@
                     <div class="col d-flex justify-content-center align-self-center intro-text">
                         <H3>
                     
-                                {{session.user_name}}<br>
-                                {{session.email_id}}
+                               Hello {{session.user_name}}!
+                    
                         
                         </H3>
                     </div>
                 </div>
             </div>
 
-            <div class="pending-issue d-flex align-items-center justify-content-center" id="pending-issue">
+            <div class="pending-issue d-flex align-items-center " id="pending-issue">
                 {% if pending_issue_data|length > 0 %}
-                <table class="table">
+                <table class="table table-striped table-dark table-hover table-responsive" style="width: 750px;margin-left:170px">
                     <thead class="thead-dark">
                       <tr>
-                        {% for header in pending_issues_headings %}
+                        {% for header in pending_issue_headings %}
                             <th scope="col">{{ header }}</th>
                         {% endfor %}
                       </tr>
@@ -144,10 +145,16 @@
                     <tbody>
                         {% for row in pending_issue_data %}
                             <tr>
-                                <th scope="row">{{forloop.counter}}</th>
-                                {% for cell in row %}
-                                    <td>{{cell}}</td>
-                                {% endfor %}
+                                <td>{{row['TICKET']}}</td>
+                                <td>{{row['TITLE']}}</td>
+                                <td>{{row['AGENT_ID']}}</td>
+                                <td>
+                                    <div class="progress" style="height: 20px;width:100px">
+                                        <div class="progress-bar bg-success" role="progressbar" aria-valuenow={{ row['PROGRESS'] }} aria-valuemin="0" aria-valuemax="100" style="width:{{ row['PROGRESS'] }}">
+                                            {{ row['PROGRESS'] }}
+                                        </div>
+                                    </div>
+                                </td>
                             </tr>
                         {% endfor %}
                     </tbody>
@@ -160,29 +167,35 @@
                     <figcaption class="blockquote-footer">
                       In our Unique way <cite title="Source Title">TCE Desk's Way</cite>
                     </figcaption>
-                    <button class="btn btn-block btn-primary gradient-custom-2">New Issue</button>
+                    <button onclick="document.getElementById('new-issue').scrollIntoView()" class="btn btn-block btn-primary gradient-custom-2">New Issue</button>
                 </span>
 
                 {% endif %}
             </div>
 
             <div class="solved-issue d-flex align-items-center justify-content-center" id="solved-issue">
-                {% if pending_issue_data|length > 0 %}
-                <table class="table">
+                {% if solved_issue_data|length > 0 %}
+                <table class="table table-striped table-dark table-hover table-responsive" style="width: 750px;margin-left:170px">
                     <thead class="thead-dark">
                       <tr>
-                        {% for header in pending_issues_headings %}
-                            <th scope="col">{{header}}</th>
+                        {% for header in solved_issue_headings %}
+                            <th scope="col">{{ header }}</th>
                         {% endfor %}
                       </tr>
                     </thead>
                     <tbody>
-                        {% for row in pending_issue_data %}
+                        {% for row in solved_issue_data %}
                             <tr>
-                                <th scope="row">{{forloop.counter}}</th>
-                                {% for cell in row %}
-                                    <td>{{cell}}</td>
-                                {% endfor %}
+                                <td>{{row['TICKET']}}</td>
+                                <td>{{row['TITLE']}}</td>
+                                <td>{{row['AGENT_ID']}}</td>
+                                <td>
+                                    <div class="progress" style="height: 20px;width:100px">
+                                        <div class="progress-bar bg-success" role="progressbar" aria-valuenow={{ row['PROGRESS'] }} aria-valuemin="0" aria-valuemax="100" style="width:{{ row['PROGRESS'] }}">
+                                            {{ row['PROGRESS'] }}
+                                        </div>
+                                    </div>
+                                </td>
                             </tr>
                         {% endfor %}
                     </tbody>

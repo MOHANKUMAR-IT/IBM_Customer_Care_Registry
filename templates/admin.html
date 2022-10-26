@@ -144,43 +144,52 @@
 
         <!-- All Agents -->
         <div style="background-color:#d646fa;height: auto;" class="d-flex  justify-content-center">
-            Agents
-            <div class="card-deck">
-              <div class="row">
-                {% for agent in agents %}
-                <div class="col">
-                <div class="card text-white bg-secondary" style="width: 18rem;">
-                  <img class="card-img-top" src="{{ url_for('static',filename='/Drawable/man.png') }}" style="width:100px;height:auto;" alt="Card image cap">
-                  <div class="card-body">
-                    <h5 class="card-title">Agent:{{ agent["agent_id"] }}</h5>
-                    <p class="card-text">
-                        Name:{{ agent["name"] }}<br>
-                        Solved:{{ agent["solved_issues"] }}<br>
-                        Pending:{{ agent["pending_issues"] }}<br>
-                        Pno:{{ agent["pno"]}} <br>
-                        Email Id:{{ agent["email_id"] }}<br>
-                    </p>
+                {% if agents %}
+                  <div class="card-deck">
+                    <div class="row">
+                      {% for agent in agents %}
+           
+                      <div class="col">
+                        <div class="card text-white bg-secondary" style="width: 18rem;margin:5px">
+                          <img class="card-img-top" src="{{ url_for('static',filename='/Drawable/man.png') }}" style="width:100px;height:auto;" alt="Card image cap">
+                          <div class="card-body">
+                            <h5 class="card-title">Agent:{{ agent["AGENT_ID"] }}</h5>
+                            <p class="card-text">
+                                Name:{{ agent["NAME"] }}<br>
+                                Solved:{{ agent["SOLVED_ISSUES"] }}<br>
+                                Pending:{{ agent["PENDING_ISSUES"] }}<br>
+                                Pno:{{ agent["PNO"]}} <br>
+                                Email Id:{{ agent["EMAIL_ID"] }}<br>
+                            </p>
+                          </div>
+                          <div class="card-footer">
+                            <a href="#" class="btn btn-primary">Remove Agent</a>
+                            <a hred="#" class="btn btn-primary">Email Agent</a>
+                          </div>
+                        </div>  
+                      </div>
+                      {% endfor %}
+                    </div>
                   </div>
-                  <div class="card-footer">
-                    <a href="#" class="btn btn-primary">Remove Agent</a>
-                    <a hred="#" class="btn btn-primary">Email Agent</a>
+                {% else %}
+                  <div class="display-1" style="color: white;background-color:black">
+                    No agents available
                   </div>
-                </div>  
-              </div>
-                {% endfor %}
-              </div>
-            </div>
+                {% endif %}
+              
         </div>
 
 
         <!-- All Issue Created -->
         <div style="background-color:#e2fa46;height: auto;" class="d-flex  justify-content-center">
-          Issue Tickets
+          
             <!-- ---------------------------------Alert Box---------------------------- -->
             <div class="alert" id="job-alert">
               <span class="closebtn" onclick="this.parentElement.style.display='none';" >&times;</span> 
               <i id="job-message">response message</i> 
              </div>
+             {% if issues %}
+  
           <div class="card-deck">
             <div class="row">
             {% for issue in issues %}
@@ -188,26 +197,30 @@
             <div class="card" style="width: 18rem;">
               <div class="card-body">
                 <h5 class="card-title">
-                  Ticket:{{ issue['ticket'] }}<br>
-                  Title:{{ issue['title'] }}
+                  Ticket:{{ issue['TICKET'] }}<br>
+                  Title:{{ issue['TITLE'] }}
                 </h5>
-                <p class="card-text">{{ issue['description'] }}</p>
+                <p class="card-text">{{ issue['DESCRIPTION'] }}</p>
                 
               </div>
               <div class="card-footer">
                 
                 <div class="mb-3">
                   Agent id
-                  <input type="text" class="form-control" id={{ issue['title'] }} placeholder={{ issue['agent_id'] }}>
+                  <input type="text" class="form-control" id={{ issue['TITLE'] }} placeholder={{ issue['AGENT_ID'] }}>
                 </div>     
-                <button onclick=assignJob({{ issue['ticket']|safe }},'{{ issue['title'] }}') class="btn btn-primary">Assign Job</button>
+                <button onclick=assignJob({{ issue['TICKET']|safe }},'{{ issue['TITLE'] }}') class="btn btn-primary">Assign Job</button>
               </div>
             </div>
           </div>
             {% endfor %}  
           </div>
           </div>
-        
+          {% else %}
+          <div class="display-1" style="color: white;background-color:black">
+            No Issues
+          </div>  
+          {% endif %}
         </div>
         </div>
     
