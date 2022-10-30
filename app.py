@@ -1,12 +1,9 @@
-
 import email
-from tkinter.messagebox import NO
-from turtle import pen
 from flask import Flask, render_template, request, redirect, url_for, session
 import ibm_db
 import re
 import time
-
+from myemail import alertMail
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = "StrongPixel1090"
@@ -136,6 +133,23 @@ def register():
             ibm_db.bind_param(stmt,5,pno)
             ibm_db.bind_param(stmt,6,user_name)
             ibm_db.execute(stmt)
+            content = '''
+                <div style="background-image:url('https://images.unsplash.com/photo-1664689708549-18f26a776256?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80');
+                        height:600px;
+                        width:100%;
+                        background-repeat:no-repeat;
+                        opacity:1;">
+                        <p style="
+                        box-shadow:0 0 0 2px white;
+                        text-shadow: 3px 3px black;
+                        position:absolute;
+                        font-size: 60px;
+                        z-index:2;
+                        text-align:center;
+                        color:white;">Congratulations '''+user_name+''',<br>You have successfully registered new account with us...<p>
+                </div>
+            '''
+            alertMail(email_id,"TCE Desk User Registration",content)
             session['loggedin'] = True
             session['session_id'] = hash(email_id+str(hash(password+str(time.time()))))
             session['email_id'] = email_id
@@ -161,6 +175,8 @@ def registerIssue():
         ibm_db.bind_param(stmt,3,description)
         # ibm_db.bind_param(stmt,4,session['user_id'])
         ibm_db.execute(stmt)
+        content = "<h1>Your issue has been taken into account <br> Ticket => <br> Title: "+title+" <br> Description: "+description+" <br><br> An agent will be alloted to solve your issue.<br>Thanks and Regards,<br><i>Team TCE-Desk</i>"
+        alertMail(session['email_id'],"TCE Desk Issue Ticket",content)
         return 'Issue ticket created successfully'
 
 
@@ -199,6 +215,8 @@ def newAgentRegister():
         ibm_db.bind_param(stmt,3,password)
         ibm_db.bind_param(stmt,4,'http://surl.li/dljov')
         ibm_db.execute(stmt)
+        content=f"<h1>Hi {name},<br>We are happy to inform you that you are a part of TCE Desk.<br>Account details,<br>Email Id: {email_id}<br>Password: {password}<br><br>Keep your credentials safer and dont disclose it.<br>Thanks and Regards,<br><i>Team TCE-Desk</i>"
+        alertMail(session['email_id'],"TCE Desk Careers",content)
         return 'New Agent Created Successfully' 
     return 'Error creating new agent'
 @app.route('/assign-job-to-agent',methods=['POST'])
@@ -211,10 +229,21 @@ def assignJobToAgent():
         ibm_db.bind_param(stmt,1,agent_id)
         ibm_db.bind_param(stmt,2,ticket)
         ibm_db.execute(stmt)
+
+
         sql = 'UPDATE AGENT_ACCOUNTS SET pending_issues = pending_issues+1 WHERE agent_id=?'
         stmt = ibm_db.prepare(conn,sql)
         ibm_db.bind_param(stmt,1,agent_id)
         ibm_db.execute(stmt)
+
+        sql = 'SELECT * FROM issue_db WHERE ticket=?'
+        stmt = ibm_db.prepare(conn,sql)
+        ibm_db.bind_param(stmt,1,ticket)
+        ibm_db.execute(stmt)
+        issue = ibm_db.fetch_assoc(stmt)
+        content="<h1>Hi Agent,<br>You have been assigned a task to solve Issue details=><br>Ticket:{}<br>Title:{} <br>Description: {} <br>User Email Id: {}<br>For further information contact user through his mail id.<br>Thanks and Regards,<br><i>Team TCE-Desk</i>".format(issue['TICKET'],issue['TITLE'],issue['DESCRIPTION'],issue['EMAIL_ID'])
+        alertMail(session['email_id'],"TCE Desk Tasks",content)
+        alertMail(issue['EMAIL_ID'],"TCE Desk Agent Allotted","<h1>Dear User,Your Iussue with ticket:{} has been alloted Agent:{} .Issue will be cleared soon enough<br><br>Thanks and Regards,<br><i>Team TCE-Desk</i>".format(issue['TICKET'],issue['AGENT_ID']))
         return 'New Job Assigned to agent %s',agent_id
     return 'Error Assigning Job to Agent'
 
@@ -223,13 +252,49 @@ def assignJobToAgent():
 
 
 @app.route('/agent')
-def agent_page():
-    sql = 'SELECT * FROM issue_db WHERE SOLVED=0 AND AGENT_ID = 1'
-    stmt = ibm_db.prepare(conn,sql)
-    ibm_db.execute(stmt)
-    job_list = ibm_db.fetch_assoc(stmt)
-    print(job_list)
-    return render_template('agent.html',job_list=job_list)  
+def agent():
+    if session.get("email_id"):
+        sql = 'SELECT * FROM issue_db WHERE SOLVED=0 AND AGENT_ID = ?'
+        stmt = ibm_db.prepare(conn,sql)
+        ibm_db.bind_param(stmt,1,session.get("agent_id"))
+        ibm_db.execute(stmt)
+        jobs = ibm_db.fetch_assoc(stmt)
+        job_list = []
+        print(jobs)
+        if jobs:
+            job_list.append(jobs)   
+        return render_template('agent.html',job_list=job_list) 
+    else:
+        return redirect('agent_login') 
+
+@app.route('/agent_login', methods =['GET', 'POST'])
+def agent_login():
+    msg = ''
+    # print("came in")
+    if request.method == 'POST' and 'email_id' in request.form and 'password' in request.form:
+        # print(request.form)
+        email_id = request.form['email_id']
+        password = request.form['password']
+        print(email_id,password)
+        sql = 'SELECT * FROM agent_accounts WHERE EMAIL_ID = ? AND PASSWORD = ?'
+
+        stmt = ibm_db.prepare(conn,sql)
+        ibm_db.bind_param(stmt,1,email_id)
+        ibm_db.bind_param(stmt,2,password)
+        ibm_db.execute(stmt)
+        account = ibm_db.fetch_assoc(stmt)
+        if account:
+            session['loggedin'] = True
+            session['session_id'] = hash(account['EMAIL_ID']+str(hash(account['PASSWORD']+str(time.time()))))
+            session['email_id'] = email_id
+            session['name'] = account['NAME']
+            session['agent_id'] = account['AGENT_ID']
+            session['solved_issues'] = account['SOLVED_ISSUES']
+            session['pending_issues'] = account['PENDING_ISSUES']
+            return redirect(url_for('agent'))
+        else:
+            msg = 'Incorrect username / password !'
+    return render_template('agent-login.html', msg = msg)
 
 @app.route('/update-task', methods = ['PUT'])
 def user():
@@ -258,6 +323,14 @@ def solveTask(ticket):
         return render_template("agent-client-ticket.html",ticket=ticket)
     return 'Error'
 
+@app.route('/update-progress',methods=["POST"])
+def update_progress():
+    sql = 'UPDATE issue_db SET progress=? WHERE ticket=?'
+    stmt = ibm_db.prepare(conn,sql)
+    ibm_db.bind_param(stmt,1,request.form['progress'])
+    ibm_db.bind_param(stmt,2,request.form['ticket'])    
+    ibm_db.execute(stmt)
+    return "Applied changes"
 
 # app.run(use_reloader=True)
 if __name__ == '__main__':

@@ -73,11 +73,12 @@
                                     </h5>
                                     <p class="card-text">{{ job['DESCRIPTION'] }}</p>
                                 </div>
-                                <div class="progress" style="height: 20px;">
-                                    <div class="progress-bar bg-success" role="progressbar" aria-valuenow={{ job['PROGRESS'] }} aria-valuemin="0" aria-valuemax="100" style="width:{{ job['PROGRESS'] }}">
-                                        {{ job['PROGRESS'] }}
-                                    </div>
-                                </div>
+                              
+                                    <div class="progress">
+                                        <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width:{{ job['PROGRESS'] }}%" aria-valuenow={{ job['PROGRESS'] }} aria-valuemin="0" aria-valuemax="100">
+                                            {{ job['PROGRESS'] }}
+                                        </div>
+                                      </div>
                                 <div class="card-footer">
                                     <input type="checkbox" class="btn-check" onchange=completedTask({{job['TICKET']|safe}},{{job['AGENT_ID']}}) id={{job['TICKET']}} name={{job['TICKET']}} >
                                     <label class="btn btn-outline-primary" for={{job['TICKET']}}>Solved</label>
