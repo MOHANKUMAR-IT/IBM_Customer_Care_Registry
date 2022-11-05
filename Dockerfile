@@ -1,11 +1,13 @@
-FROM ubuntu
+FROM python:3.10.7
 
-RUN apt-get update && apt-get install -y python3 python3-pip
-RUN pip install flask==2.1
 
-COPY .
+WORKDIR /usr/src/app
 
-ENV FLASK_APP=app
+COPY requirements.txt requirements.txt
+RUN pip3 install -r requirements.txt
 
-EXPOSE 5000
+COPY . .
+
+RUN Scripts/activate
+CMD [ "python3", "app.py"]
 

@@ -49,6 +49,10 @@
          };
     </script>
     <style>
+      body{
+        margin:0;
+
+      }
       .active {
           color: lime; 
           font-weight: 600;
@@ -90,58 +94,29 @@
               <span class="closebtn" onclick="this.parentElement.style.display='none';" >&times;</span> 
               <i id="message">response message</i> 
              </div>
-            <section class="vh-60">
-                <div class="container h-80">
-                  <div class="row d-flex justify-content-center align-items-center h-100">
-                    <div class="col-lg-12 col-xl-11">
-                      <div class="card text-black" style="border-radius: 25px;background-color: rgb(221, 229, 231);">
-                        <div class="card-body p-md-5" >
-                          <div class="row justify-content-center align-items-center">
-                            <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
-                            
-                              <form class="mx-1 mx-md-4" id="new-agent-form" action="{{ url_for('newAgentRegister') }}" method="post">
+             <form id="new-agent-form" action="{{ url_for('newAgentRegister') }}" method="post">
               
-                                <div class="d-flex flex-row align-items-center mb-4">
-                                  <i class="fas fa-user fa-lg me-3 fa-fw"></i>
-                                  <div class="form-outline flex-fill mb-0">
-                                    <input type="text" id="name" class="form-control" placeholder="Agent Name"/>
-                                  </div>
-                                </div>
-              
-                                <div class="d-flex flex-row align-items-center mb-4">
-                                  <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
-                                  <div class="form-outline flex-fill mb-0">
-                                    <input type="email" id="email" class="form-control" placeholder="Email Id"/>
-                                  </div>
-                                </div>
-              
-                                <div class="d-flex flex-row align-items-center mb-4">
-                                  <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
-                                  <div class="form-outline flex-fill mb-0">
-                                    <input type="password" id="password" class="form-control" placeholder="Password" />
-                                  </div>
-                                </div>
-              
-              
-                                <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                                  <button type="submit" class="btn btn-primary btn-lg">Register</button>
-                                </div>
-              
-                              </form>
-                            </div>
-                            <div class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
-                              <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/draw1.webp"
-                                class="img-fluid" alt="Sample image">
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </section>
-        </div>
 
+                <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+                  <input type="text" id="name" class="form-control" placeholder="Agent Name"/>
+
+
+                <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
+                  <input type="email" id="email" class="form-control" placeholder="Email Id"/>
+             
+                <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
+
+                  <input type="password" id="password" class="form-control" placeholder="Password" />
+
+
+
+              <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+                <button type="submit" class="btn btn-primary btn-lg">Register</button>
+              </div>
+
+            </form>
+        </div>
+        </div>
         <!-- All Agents -->
         <div style="background-color:#d646fa;height: auto;" class="d-flex  justify-content-center">
                 {% if agents %}
@@ -209,7 +184,7 @@
                   Agent id
                   <input type="text" class="form-control" id={{ issue['TITLE'] }} placeholder={{ issue['AGENT_ID'] }}>
                 </div>     
-                <button onclick=assignJob({{ issue['TICKET']|safe }},'{{ issue['TITLE'] }}') class="btn btn-primary">Assign Job</button>
+                <button onclick=assignJob({{issue['TICKET']|safe}},'{{ issue['TITLE'] }}') class="btn btn-primary">Assign Job</button>
               </div>
             </div>
           </div>
@@ -222,7 +197,6 @@
           </div>  
           {% endif %}
         </div>
-        </div>
-    
+      </div>
 </body>
 </html>

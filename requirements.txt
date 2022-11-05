@@ -1,0 +1,5 @@
+Flask 
+Werkzeug 
+sendgrid
+ibm_db
+waitress

@@ -332,11 +332,14 @@ def update_progress():
     ibm_db.execute(stmt)
     return "Applied changes"
 
-# app.run(use_reloader=True)
+
 if __name__ == '__main__':
     # from livereload import Server
     # server = Server(app.wsgi_app)
     app.run(debug=True)
-    app.run()
+    # app.run(use_reloader=True)
+    # app.run()
+    # from waitress import serve
+    # serve(app, host="0.0.0.0", port=8080)
     # server.serve(host = '0.0.0.0',port=5000)
     
