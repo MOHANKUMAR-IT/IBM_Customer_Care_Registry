@@ -1,4 +1,3 @@
-import email
 from flask import Flask, render_template, request, redirect, url_for, session
 import ibm_db
 import re
@@ -80,7 +79,6 @@ def login():
         password = request.form['password']
         print(email_id,password)
         sql = 'SELECT * FROM user_accounts WHERE EMAIL_ID = ? AND PASSWORD = ?'
-
         stmt = ibm_db.prepare(conn,sql)
         ibm_db.bind_param(stmt,1,email_id)
         ibm_db.bind_param(stmt,2,password)
@@ -94,6 +92,7 @@ def login():
             print(session)
             session['first_name'] = account['FIRST_NAME']
             session['last_name'] = account['LAST_NAME']
+            session['user_id'] = account['USER_ID']
             return redirect('/index')
         else:
             msg = 'Incorrect username / password !'
@@ -168,12 +167,12 @@ def registerIssue():
         title = request.form['title']
         description = request.form['description']
         
-        sql = 'INSERT INTO issue_db(email_id,title,description) VALUES(?,?,?)'
+        sql = 'INSERT INTO issue_db(email_id,title,description,user_id) VALUES(?,?,?,?)'
         stmt = ibm_db.prepare(conn,sql)
-        ibm_db.bind_param(stmt, 1,session['email_id'])
-        ibm_db.bind_param(stmt,2,title)
-        ibm_db.bind_param(stmt,3,description)
-        # ibm_db.bind_param(stmt,4,session['user_id'])
+        ibm_db.bind_param(stmt, 1, session['email_id'])
+        ibm_db.bind_param(stmt, 2, title)
+        ibm_db.bind_param(stmt, 3, description)
+        ibm_db.bind_param(stmt, 4, session['user_id'])
         ibm_db.execute(stmt)
         content = "<h1>Your issue has been taken into account <br> Ticket => <br> Title: "+title+" <br> Description: "+description+" <br><br> An agent will be alloted to solve your issue.<br>Thanks and Regards,<br><i>Team TCE-Desk</i>"
         alertMail(session['email_id'],"TCE Desk Issue Ticket",content)
@@ -196,10 +195,13 @@ def admin():
     issue = ibm_db.fetch_assoc(stmt)
     agents = []
     issues = []
-    if(account):agents.append(account)
-    if(issue):issues.append(issue)
-    print(account)
-    return render_template('admin.html',agents=agents,name="mohan",issues=issues)
+    if(isinstance(account,dict)):agents.append(account)
+    else: agents=account
+    if(isinstance(issue,dict)):issues.append(issue)
+    else:issues=issue
+    print(issues,len(issues))
+    print(agents,len(agents))
+    return render_template('admin1.html',agents=agents,name="mohan",issues=issues)
 
 
 @app.route('/new-agent-register',methods=['POST'])
@@ -244,12 +246,11 @@ def assignJobToAgent():
         content="<h1>Hi Agent,<br>You have been assigned a task to solve Issue details=><br>Ticket:{}<br>Title:{} <br>Description: {} <br>User Email Id: {}<br>For further information contact user through his mail id.<br>Thanks and Regards,<br><i>Team TCE-Desk</i>".format(issue['TICKET'],issue['TITLE'],issue['DESCRIPTION'],issue['EMAIL_ID'])
         alertMail(session['email_id'],"TCE Desk Tasks",content)
         alertMail(issue['EMAIL_ID'],"TCE Desk Agent Allotted","<h1>Dear User,Your Iussue with ticket:{} has been alloted Agent:{} .Issue will be cleared soon enough<br><br>Thanks and Regards,<br><i>Team TCE-Desk</i>".format(issue['TICKET'],issue['AGENT_ID']))
-        return 'New Job Assigned to agent %s',agent_id
+        return 'New Job Assigned to agent '+str(agent_id)
+        
     return 'Error Assigning Job to Agent'
 
-
 #---------------For agent----------------
-
 
 @app.route('/agent')
 def agent():
@@ -337,7 +338,7 @@ if __name__ == '__main__':
     # from livereload import Server
     # server = Server(app.wsgi_app)
     app.run(debug=True)
-    # app.run(use_reloader=True)
+    app.run(use_reloader=True)
     # app.run()
     # from waitress import serve
     # serve(app, host="0.0.0.0", port=8080)
