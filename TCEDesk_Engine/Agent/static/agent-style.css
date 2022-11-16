@@ -1,0 +1,71 @@
+.intro-page{
+    height: 100vh;
+    background-image: linear-gradient( 63.1deg,  rgba(5,23,111,1) 16.4%, rgba(24,95,240,1) 64.5% );
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: space-between;
+    overflow: hidden;
+}
+
+.intro-page > img {
+    height: 60vh;
+    z-index: 1;
+}
+
+#hero-img{
+    position: absolute;
+    right: 0%;
+    top: 0;
+    width: 100vh;
+    height: 200vh;
+    z-index: 0;
+    background-color: #111e3e;
+    transform: skewY(135deg);
+}
+
+.wrapper {
+    display: grid;
+    position: static;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    grid-auto-rows: auto;
+  }
+
+.ticket-info{
+    width: 40vw;
+    border: 2px solid black;
+    box-shadow: 60px -16px 10px rgb(83, 196, 70);
+    border-radius:40px 100px 100px 40px;
+}
+
+.ticket-info > p{
+    font-size: 2rem;
+}
+
+.side-pattern{
+    background-image: url('/agent/static/leaves.svg');
+    background-size: cover;
+    height: 100vh;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+
+}
+
+.status-info {
+    animation: color-change 1s infinite;
+    width:fit-content;
+    border-radius: 40px;
+  }
+  
+  @keyframes color-change {
+    0% { color: red; }
+    50% { color: blue; }
+    100% { color: red; }
+  }
+
+.id{
+    font-weight: 500;
+    display: inline-block;
+}

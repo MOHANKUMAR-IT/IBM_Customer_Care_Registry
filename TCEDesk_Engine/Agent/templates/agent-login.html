@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Login User</title>
+        <script src="https://apis.google.com/js/platform.js" async defer></script>
+        <meta name="google-signin-client_id" content="233300008585-epu0aj89fcvqqh6317t4ds507a2kbtig.apps.googleusercontent.com">
+        <!-- <link rel="stylesheet" href="{{ url_for('static', filename='/node_modules/bootstrap/dist/css/bootstrap.css') }}"> -->
+        <script src="https://kit.fontawesome.com/07972bca60.js" crossorigin="anonymous"></script>
+
+        <!-- <script src="{{ url_for('static', filename='/node_modules/jquery/dist/jquery.js') }}"></script>
+        <script src="{{ url_for('static', filename='/node_modules/bootstrap/dist/js/bootstrap.js') }}"></script> -->
+
+
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+        <!-- JavaScript Bundle with Popper -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+
+
+        <link rel="stylesheet" href="/agent/static/style-entrypoint.css">
+</head>
+<body>
+  
+    <section class="gradient-form background-radial-gradient overflow-hidden">
+        <div class="container py-5 h-100">
+            <div class="col-lg-6 mb-5 mb-lg-0 position-relative">
+                <div id="radius-shape-1" class="position-absolute rounded-circle shadow-5-strong"></div>
+                <div id="radius-shape-2" class="position-absolute shadow-5-strong"></div>
+            </div>
+          <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-xl-10">
+              <div class="card rounded-3 text-black">
+                <div class="row g-0">
+                  <div class="col-lg-6">
+                    <div class="card-body p-md-5 mx-md-4">
+                      <div class="text-center">
+                        <img src="/agent/static/logo2.png"
+                          style="width: 185px;" alt="logo">
+                      </div>
+                      {% if msg|length > 0 %}
+                      <div class="alert">
+                        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                        {{msg}}
+                      </div>
+                      {% endif %}
+                      <form action="/agent/login" method="post">
+                        <div class="form-outline mb-4">
+                          <input type="email" id="email_id" name="email_id" class="form-control" placeholder="Email address" />
+                        </div>
+      
+                        <div class="form-outline mb-4">
+                          <input type="password" name="password" id="password" class="form-control" placeholder="Password" />
+                        </div>
+                        
+                        <div class="form-outline text-center mb-5">
+                          <div class="g-signin2" data-onsuccess="onSignIn"></div>
+                          <input type="submit" class="btn btn-block btn-primary gradient-custom-2" placeholder="Log in">
+                        </div>
+                        
+                      </form>
+                    </div>
+                  </div>
+                  <div class="col-lg-6 d-flex align-items-center gradient-custom-2">
+                    <div class="text-white px-3 py-4 p-md-5 mx-md-4">
+                      <h4 class="mb-4">We are more than just a company</h4>
+                      <p class="small mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                        exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <script>
+        function onSignIn(googleUser) {
+          var profile = googleUser.getBasicProfile();
+          console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+          console.log('Name: ' + profile.getName());
+          console.log('Image URL: ' + profile.getImageUrl());
+          console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+        }
+      </script>
+</body>
+</html>
