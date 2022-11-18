@@ -111,12 +111,17 @@ def register():
                         color:white;">Congratulations '''+user_name+''',<br>You have successfully registered new account with us...<p>
                 </div>
             '''
-            alertMail(email_id,"TCE Desk User Registration",content)
+            alertMail(email_id,"TCE Desk User Registration",content)        
             msg = 'You have successfully registered !'
             return redirect('/user')
     elif request.method == 'POST':
         msg = 'Please fill out the form !'
-    return render_template('register.html', msg = msg)
+    try:
+        if(request.args['email_id']):
+            return render_template('register.html', msg = msg,email_id=request.args['email_id'])
+        return render_template('register.html', msg = msg)
+    except:
+        return render_template('register.html', msg = msg)
 
 @user_bp.route('/register-issue',methods=['POST'])
 def registerIssue():

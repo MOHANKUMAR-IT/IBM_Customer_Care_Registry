@@ -20,7 +20,7 @@ def selectQuery(columns,table,conditions=None,conditionValues=None):
                 sql+='AND '
     
     stmt = ibm_db.prepare(conn,sql)
-    # print(sql)
+    print('\n\n\n'+sql+'\n\n\n')
     if conditionValues:
         for i in range(len(conditionValues)):
             ibm_db.bind_param(stmt,i+1,conditionValues[i])

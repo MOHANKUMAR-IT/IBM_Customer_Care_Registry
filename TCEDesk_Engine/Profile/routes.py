@@ -4,11 +4,11 @@ from werkzeug.utils import secure_filename
 
 from TCEDesk_Engine.DB2Queries import updateQuery
 
-from dotenv import load_dotenv 
+
 
 import os
 
-load_dotenv()
+
 
 profile_bp = Blueprint('profile_bp', __name__,
     template_folder='templates',
@@ -19,7 +19,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 class Config(object):
     SECRET_KEY = os.environ.get('SECRET_KEY')
-    UPLOAD_FOLDER = os.path.join(basedir, 'static/profile')
+    UPLOAD_FOLDER = os.path.join(basedir, 'static/profilepic')
     ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
     MAX_CONTENT_LENGTH = 16 * 1024 * 1024
 
@@ -63,7 +63,7 @@ def profile_img():
         filename = filename+'.'+secure_filename(file.filename).rsplit('.', 1)[1].lower()
         file.save(os.path.join(Config.UPLOAD_FOLDER, filename))
         flash('Image has been successfully uploaded')
-        session['profile'] = '/static/profilepic/'+filename
+        session['profile'] = '/profile/static/profilepic/'+filename
 
         updateQuery('UPDATE '+session['type']+' SET profile = ? WHERE user_id= ?',[session['profile'],session['user_id'] if (session['type']=="USER_ACCOUNTS") else session['agent_id']])
 

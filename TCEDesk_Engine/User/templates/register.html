@@ -2,7 +2,8 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Register User</title>
+        <title>TCE Desk User Registeration</title>
+        <link rel="icon" type="image/x-icon" href="/cloud.png">
         <script src="https://apis.google.com/js/platform.js" async defer></script>
         <meta name="google-signin-client_id" content="233300008585-epu0aj89fcvqqh6317t4ds507a2kbtig.apps.googleusercontent.com">
         <!-- <link rel="stylesheet" href="{{ url_for('static', filename='/node_modules/bootstrap/dist/css/bootstrap.css') }}"> -->
@@ -59,10 +60,8 @@
                     <span style="color: hsl(218, 81%, 75%)">for your business</span>
                 </h1>
                 <p class="mb-4 opacity-70" style="color: hsl(218, 81%, 85%)">
-                    Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                    Temporibus, expedita iusto veniam atque, magni tempora mollitia
-                    dolorum consequatur nulla, neque debitis eos reprehenderit quasi
-                    ab ipsum nisi dolorem modi. Quos?
+                    <h2 class="display-3 text-white">A simple ticketing system for a team like yours</h2>
+                    <h3 class="text-light my-3">Manage all your customer messages in one place. Build better bonds automatically.</h3>
                 </p>
                 </div>
         
@@ -114,7 +113,7 @@
         
                         <!-- Email input -->
                         <div class="form-outline mb-4">
-                        <input type="email" id="email_id" name="email_id" class="form-control" placeholder="Email address" required/>
+                        <input type="email" id="email_id" name="email_id" class="form-control" {% if email_id %} value="{{email_id}}" {% endif %} placeholder="Email address" required/>
                         </div>
         
                         <!-- Password input -->

@@ -8,15 +8,30 @@ admin_bp = Blueprint('admin_bp',__name__,static_folder='static',static_url_path=
 
 @admin_bp.route('/',methods=['POST','GET'])
 def admin():
-    account = selectQuery(['*'],'agent_accounts')
-    issue = selectQuery(['*'],'issue_db',['solved'],[0])
-    agents = []
-    issues = []
-    if(account and isinstance(account,dict)):agents.append(account)
-    else: agents=account
-    if(issue and isinstance(issue,dict)):issues.append(issue)
-    else:issues=issue
-    return render_template('admin.html',agents=agents,issues=issues)
+    if session.get("loggedin"):
+        account = selectQuery(['*'],'agent_accounts')
+        issue = selectQuery(['*'],'issue_db',['solved'],[0])
+        agents = []
+        issues = []
+        if(account and isinstance(account,dict)):agents.append(account)
+        else: agents=account
+        if(issue and isinstance(issue,dict)):issues.append(issue)
+        else:issues=issue
+        print(agents)
+        return render_template('admin.html',agents=agents,issues=issues)
+    else:
+        return redirect('/admin/admin-login')
+@admin_bp.route('/admin-login',methods=['POST','GET'])
+def admin_login():
+    msg = ''
+    print(dict(request.form))
+    if 'password' in request.form:
+        if(request.form['password']=='admin'):
+            session['loggedin'] = True
+            return redirect('/admin')
+        msg = 'Incorrect password!'
+
+    return render_template('admin-login.html',msg=msg)
 
 
 @admin_bp.route('/new-agent-register',methods=['POST'])
@@ -72,3 +87,7 @@ def removeAgent():
         alertMail(agentAcc,"TCE Desk Career",content)
         return "Agent removed successfully :)"
 
+@admin_bp.route('/logout')
+def logout():
+    session.clear()
+    return render_template('admin-login.html')

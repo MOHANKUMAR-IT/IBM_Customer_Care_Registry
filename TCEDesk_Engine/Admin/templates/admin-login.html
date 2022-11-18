@@ -9,16 +9,13 @@
         <!-- <link rel="stylesheet" href="{{ url_for('static', filename='/node_modules/bootstrap/dist/css/bootstrap.css') }}"> -->
         <script src="https://kit.fontawesome.com/07972bca60.js" crossorigin="anonymous"></script>
         <link rel="icon" type="image/x-icon" href="/cloud.png">
-        <!-- <script src="{{ url_for('static', filename='/node_modules/jquery/dist/jquery.js') }}"></script>
-        <script src="{{ url_for('static', filename='/node_modules/bootstrap/dist/js/bootstrap.js') }}"></script> -->
-
-
+        <!-- <script src="{{ url_for('static', filename='/node_modules/jquery/dist/jquery.js') }}"></script> -->
+        <!-- <script src="{{ url_for('static', filename='/node_modules/bootstrap/dist/js/bootstrap.js') }}"></script> -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
         <!-- JavaScript Bundle with Popper -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
-
-
-        <link rel="stylesheet" href="/agent/static/style-entrypoint.css">
+   
+        <link rel="stylesheet" href="/user/static/style-entrypoint.css">
 </head>
 <body>
   
@@ -35,7 +32,7 @@
                   <div class="col-lg-6">
                     <div class="card-body p-md-5 mx-md-4">
                       <div class="text-center">
-                        <img src="/agent/static/logo2.png"
+                        <img src="/user/static/logo2.png"
                           style="width: 185px;" alt="logo">
                       </div>
                       {% if msg|length > 0 %}
@@ -44,9 +41,9 @@
                         {{msg}}
                       </div>
                       {% endif %}
-                      <form action="/agent/login" method="post">
+                      <form action="/admin/admin-login" method="post">
                         <div class="form-outline mb-4">
-                          <input type="email" id="email_id" name="email_id" class="form-control" placeholder="Email address" />
+                          <input type="text" id="admin" name="admin" class="form-control" placeholder="Admin" value="admin" disabled />
                         </div>
       
                         <div class="form-outline mb-4">
@@ -55,9 +52,14 @@
                         
                         <div class="form-outline text-center mb-5">
                           <div class="g-signin2" data-onsuccess="onSignIn"></div>
-                          <input type="submit" class="btn btn-block btn-primary gradient-custom-2" placeholder="Log in">
+                          <input type="submit" class="btn btn-block btn-primary gradient-custom-2" type="button" placeholder="Log in">
                         </div>
-                        
+                        <div class="d-flex align-items-center justify-content-center pb-4">
+                          <p class="mb-0 me-2">Don't have an account?</p>
+                          <a href="/user/register">
+                            <button type="button" class="btn btn-outline-danger">Create new</button>
+                          </a>
+                        </div>
                       </form>
                     </div>
                   </div>
@@ -76,14 +78,6 @@
           </div>
         </div>
       </section>
-      <script>
-        function onSignIn(googleUser) {
-          var profile = googleUser.getBasicProfile();
-          console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-          console.log('Name: ' + profile.getName());
-          console.log('Image URL: ' + profile.getImageUrl());
-          console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-        }
-      </script>
+
 </body>
 </html>

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="/cloud.png">
     <title>TCE Desk</title>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <!-- Bootstrap Files -->
@@ -14,6 +15,12 @@
 
     <!-- Template Main CSS File -->
     <link href="/static/style.css" rel="stylesheet">
+    <style>
+        #signup:hover{
+            
+            border: 2px solid blue;
+        }
+    </style>
 </head>
 <body style="background-image: radial-gradient( circle farthest-corner at 10% 20%,  rgba(234,249,249,0.67) 0.1%, rgba(239,249,251,0.63) 90.1% );overflow: hidden;">
     <div class="container-fluid hero-banner" >
@@ -36,10 +43,15 @@
                 <h4 style="margin-top:2vh">
                     A tool that organizes customer communication to help businesses respond to customers and support them more quickly and effectively.
                 </h4>
-                <input type="email" style="width:23vw;height:6vh;padding: 1rem;margin-top: 3vh;display: block;" placeholder="Please enter your work email">
+                <form action="/" method="POST">
+                    <input type="email" name="email_id" style="width:23vw;height:6vh;padding: 1rem;margin-top: 3vh;display: block;" placeholder="Please enter your work email">
 
-                <button class="btn" style="width:23vw;height:6vh;margin-top:3vh;background-image: radial-gradient( circle farthest-corner at 22.4% 21.7%,  rgba(4,189,228,1) 0%, rgba(2,83,185,1) 100.2% );"><h4 class="text-light">Sign Up</h4></button>
-                <ul class="nav" style="margin-left:5vw;">
+                    <button class="btn" id="signup" type="submit" style="width:23vw;height:6vh;margin-top:3vh;background-image: radial-gradient( circle farthest-corner at 22.4% 21.7%,  rgba(4,189,228,1) 0%, rgba(2,83,185,1) 100.2% );">
+                        <h4 class="text-light">Sign Up</h4>
+                    </button>
+               
+                </form>
+                 <ul class="nav" style="margin-left:5vw;">
                     <li class="nav-item"><a class="nav-link text-light" href="/admin" style="margin: 1rem;
                         background-image: radial-gradient( circle farthest-corner at 83.7% 4.3%,  rgba(173,0,171,1) 0%, rgba(15,51,92,1) 90% );
                       ">Admin</a></li>
