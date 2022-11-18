@@ -3,7 +3,7 @@ from sendgrid.helpers.mail import Mail, Email, To,Content
 
 def alertMail(to_email,subject,content):
     try:
-        sg = sendgrid.SendGridAPIClient(api_key="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")
+        sg = sendgrid.SendGridAPIClient(api_key="You Key")
         from_email = Email("mohankumar.it.2001@gmail.com")  
         to_email = To(to_email)  
         content = Content("text/html", content)
