@@ -86,5 +86,5 @@ def update_progress():
 @agent_bp.route('/logout')
 def logout():
     session.clear()
-    return redirect('/agent/login')
+    return redirect('/')
 

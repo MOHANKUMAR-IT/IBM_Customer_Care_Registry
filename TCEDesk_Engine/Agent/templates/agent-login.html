@@ -18,7 +18,7 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
 
 
-        <link rel="stylesheet" href="/agent/static/style-entrypoint.css">
+        <link rel="stylesheet" href="/style-entrypoint.css">
 </head>
 <body>
   
@@ -35,8 +35,10 @@
                   <div class="col-lg-6">
                     <div class="card-body p-md-5 mx-md-4">
                       <div class="text-center">
+                        <a href="/">
                         <img src="/agent/static/logo2.png"
                           style="width: 185px;" alt="logo">
+                        </a>
                       </div>
                       {% if msg|length > 0 %}
                       <div class="alert">
@@ -53,15 +55,14 @@
                           <input type="password" name="password" id="password" class="form-control" placeholder="Password" />
                         </div>
                         
-                        <div class="form-outline text-center mb-5">
-                          <div class="g-signin2" data-onsuccess="onSignIn"></div>
+                        <div class="form-outline text-center mb-5 my-2">
                           <input type="submit" class="btn btn-block btn-primary gradient-custom-2" placeholder="Log in">
                         </div>
                         
                       </form>
                     </div>
                   </div>
-                  <div class="col-lg-6 d-flex align-items-center gradient-custom-2" style="overflow: hidden;position: relative;;background-image: radial-gradient( circle farthest-corner at 10% 20%,  rgba(171,102,255,1) 0%, rgba(116,182,247,1) 90% );">
+                  <div class="col-lg-6 d-flex align-items-center gradient-custom-2" style="overflow: hidden;position: relative;background-image: radial-gradient( circle farthest-corner at 14.2% 27.5%,  rgba(104,199,255,1) 0%, rgba(181,126,255,1) 90% );">
                     <div class="text-white px-3 py-2 p-md-5 mx-md-2" style="z-index: 10;">
                       <h4 class="mb-4 display-5">We are more than just a company</h4>
                       <h3>What is TCE Desk?</h3><br>
@@ -76,14 +77,6 @@
           </div>
         </div>
       </section>
-      <script>
-        function onSignIn(googleUser) {
-          var profile = googleUser.getBasicProfile();
-          console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-          console.log('Name: ' + profile.getName());
-          console.log('Image URL: ' + profile.getImageUrl());
-          console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-        }
-      </script>
+
 </body>
 </html>

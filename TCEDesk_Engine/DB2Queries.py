@@ -2,6 +2,8 @@ import ibm_db
 
 conn = ibm_db.connect("DATABASE=bludb;HOSTNAME=1bbf73c5-d84a-4bb0-85b9-ab1a4348f4a4.c3n41cmd0nqnrk39u98g.databases.appdomain.cloud;PORT=32286;SECURITY=SSL;SSLServerCertificate=DigiCertGlobalRootCA.crt;UID=fgp33793;PWD=DXgCxphsnaCXNucS",'','')
 
+
+
 def selectQuery(columns,table,conditions=None,conditionValues=None):
     
     sql = 'SELECT '
@@ -26,8 +28,12 @@ def selectQuery(columns,table,conditions=None,conditionValues=None):
             ibm_db.bind_param(stmt,i+1,conditionValues[i])
     
     ibm_db.execute(stmt)
-    data = ibm_db.fetch_assoc(stmt)
+    data = []
 
+    myd = ibm_db.fetch_assoc(stmt)
+    while myd != False:
+        data.append(dict(myd))
+        myd = ibm_db.fetch_assoc(stmt)
     return data
     
 

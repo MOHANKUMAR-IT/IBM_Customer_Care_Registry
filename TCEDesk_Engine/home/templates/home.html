@@ -15,48 +15,45 @@
 
     <!-- Template Main CSS File -->
     <link href="/static/style.css" rel="stylesheet">
-    <style>
-        #signup:hover{
-            
-            border: 2px solid blue;
-        }
-    </style>
+
 </head>
 <body style="background-image: radial-gradient( circle farthest-corner at 10% 20%,  rgba(234,249,249,0.67) 0.1%, rgba(239,249,251,0.63) 90.1% );overflow: hidden;">
     <div class="container-fluid hero-banner" >
-        <nav class="navbar navbar-light" style="margin-top: 2rem;">
-            <a class="navbar-brand" style="margin-left: 250px;"><img src="logo-no-bg.png" style="height: 3rem;padding:0"></a>
-            <form class="form-inline" style="margin-right: 250px;">
-              <button class="btn btn-outline-success my-2 my-sm-0 p-3" type="submit"><a href="/user/register" class="txt-success" style="text-decoration: none;">Free To Use</a></button>
-            </form>
-          </nav>
+        <div class="row">
+            <nav class=" col navbar navbar-light" style="margin-top: 2rem;">
+                <a class="navbar-brand" style="margin-left: 20vw;"><img src="logo-no-bg.png" style="height: 3rem;padding:0"></a>
+                <form class="form-inline" style="margin-right: 20vw;">
+                  <button class="btn btn-outline-success btn-primary my-2 my-sm-0 p-3" type="submit"><a href="/user/register" class="text-light" style="text-decoration: none;">Free To Use</a></button>
+                </form>
+              </nav>
+        </div>
         <div class="row d-flex justify-space-between" style="height: 100vh;">
-            <div class="col-7 d-flex justify-content-center align-items-center">
-                <img src="home.png" style="height: 280px;object-fit:contain;z-index:3;margin-top: -100px;">
-                <img src="home-hero.jpg" style="height: 250px;object-fit:contain;border-radius: 0 0 0 100%;position: absolute;margin-left: 300px;margin-top: -120px;">
-                
+            <div class="col d-flex justify-content-center align-items-center">
+                <img src="home.png" style="height: auto;max-width: 80%;object-fit:contain;position: relative;z-index:3;margin-top: -5rem;">
+                <img src="home-hero.jpg" style="height: auto;max-width: 25%;object-fit:contain;border-radius: 0 0 0 100%;position: absolute;margin-left: 22vw;margin-top: -15rem;">
             </div>
             <div class="col-4" style="margin-left: 5rem;">
-                <h1 class="display-5" style="font-weight: 900;">
+                <p class="display-5" style="font-weight: 900;">
                     Power up your customer support with TCEdesk
-                </h1>
+                </p>
                 <h4 style="margin-top:2vh">
                     A tool that organizes customer communication to help businesses respond to customers and support them more quickly and effectively.
                 </h4>
                 <form action="/" method="POST">
                     <input type="email" name="email_id" style="width:23vw;height:6vh;padding: 1rem;margin-top: 3vh;display: block;" placeholder="Please enter your work email">
-
                     <button class="btn" id="signup" type="submit" style="width:23vw;height:6vh;margin-top:3vh;background-image: radial-gradient( circle farthest-corner at 22.4% 21.7%,  rgba(4,189,228,1) 0%, rgba(2,83,185,1) 100.2% );">
                         <h4 class="text-light">Sign Up</h4>
                     </button>
-               
                 </form>
-                 <ul class="nav" style="margin-left:5vw;">
+                 <ul class="nav" style="margin-left:2vw;">
+                    <li class="nav-item"><a class="nav-link text-light" href="/user" style="margin: 1rem;
+                        background-image: radial-gradient( circle farthest-corner at 83.7% 4.3%,  rgba(173,0,171,1) 10%, rgba(15,51,92,1) 90% );border-radius: 10px;
+                      ">User</a></li>
                     <li class="nav-item"><a class="nav-link text-light" href="/admin" style="margin: 1rem;
-                        background-image: radial-gradient( circle farthest-corner at 83.7% 4.3%,  rgba(173,0,171,1) 0%, rgba(15,51,92,1) 90% );
+                        background-image: radial-gradient( circle farthest-corner at 83.7% 4.3%,  rgba(173,0,171,1) 0%, rgba(15,51,92,1) 90% );border-radius: 10px;
                       ">Admin</a></li>
                     <li class="nav-item"><a class="nav-link text-light" href="/agent" style="margin: 1rem;
-                        background-image: radial-gradient( circle farthest-corner at 17.3% 4.3%,  rgba(173,0,171,1) 0%, rgba(15,51,92,1) 90% );
+                        background-image: radial-gradient( circle farthest-corner at 17.3% 4.3%,  rgba(173,0,171,1) 0%, rgba(15,51,92,1) 90% );border-radius: 10px;
                       ">Agent</a></li>
                 </div>
                 

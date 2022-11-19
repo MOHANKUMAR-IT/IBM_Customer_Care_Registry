@@ -16,7 +16,7 @@
         <!-- JavaScript Bundle with Popper -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
    
-        <link rel="stylesheet" href="/user/static/style-entrypoint.css">
+        <link rel="stylesheet" href="/style-entrypoint.css">
 </head>
 <body>
   
@@ -33,8 +33,10 @@
                   <div class="col-lg-6">
                     <div class="card-body p-md-5 mx-md-4">
                       <div class="text-center">
+                        <a href="/">
                         <img src="/user/static/logo2.png"
                           style="width: 185px;" alt="logo">
+                          </a>
                       </div>
                       {% if msg|length > 0 %}
                       <div class="alert">
@@ -52,7 +54,6 @@
                         </div>
                         
                         <div class="form-outline text-center mb-5">
-                          <div class="g-signin2" data-onsuccess="onSignIn"></div>
                           <input type="submit" class="btn btn-block btn-primary gradient-custom-2" type="button" placeholder="Log in">
                         </div>
                         <div class="d-flex align-items-center justify-content-center pb-4">

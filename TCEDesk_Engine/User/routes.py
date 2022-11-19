@@ -14,7 +14,7 @@ user_bp = Blueprint('user_bp', __name__,
 @user_bp.route('/logout')
 def logout():
     session.clear()
-    return render_template('login.html')
+    return redirect('/')
 
     
 @user_bp.route('/')    

@@ -2,9 +2,12 @@ from flask import Flask, render_template, request, redirect, url_for, session ,f
 
 from TCEDesk_Engine.Emailer import alertMail
 from TCEDesk_Engine.DB2Queries import insertQuery,selectQuery,updateQuery,deleteQuery
-
+import ibm_db
 
 admin_bp = Blueprint('admin_bp',__name__,static_folder='static',static_url_path='static',template_folder='templates')
+
+conn = ibm_db.connect("DATABASE=bludb;HOSTNAME=1bbf73c5-d84a-4bb0-85b9-ab1a4348f4a4.c3n41cmd0nqnrk39u98g.databases.appdomain.cloud;PORT=32286;SECURITY=SSL;SSLServerCertificate=DigiCertGlobalRootCA.crt;UID=fgp33793;PWD=DXgCxphsnaCXNucS",'','')
+
 
 @admin_bp.route('/',methods=['POST','GET'])
 def admin():
@@ -90,4 +93,4 @@ def removeAgent():
 @admin_bp.route('/logout')
 def logout():
     session.clear()
-    return render_template('admin-login.html')
+    return redirect('/')
