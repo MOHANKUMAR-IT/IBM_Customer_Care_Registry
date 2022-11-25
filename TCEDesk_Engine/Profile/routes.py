@@ -35,14 +35,18 @@ def profile():
         if request.form:
             type = session['type']
             id = ""
+            name=""
             if type=="AGENT_ACCOUNTS":
                 id = "agent_id"
+                name = "name"
             else:
                 id = "user_id"
-            updateQuery('UPDATE '+type+' SET user_name= ?,first_name= ?,last_name= ?,pno= ?,password= ?,email_id= ?,location= ?,date_of_birth= ? WHERE '+id+'= ?',[request.form["name"],\
+                name = "user_name"
+
+            updateQuery('UPDATE '+type+' SET '+name+'= ?,first_name= ?,last_name= ?,pno= ?,password= ?,email_id= ?,location= ?,date_of_birth= ? WHERE '+id+'= ?',[request.form["name"],\
                 request.form["first_name"],request.form['last_name'],request.form['pno'],request.form['password'],request.form['email_id'],request.form['location'],request.form['dob'],\
                 session[id] ])
-
+            
             for i in request.form:
                 session[i] = request.form[i]
 
@@ -64,9 +68,13 @@ def profile_img():
         file.save(os.path.join(Config.UPLOAD_FOLDER, filename))
         flash('Image has been successfully uploaded')
         session['profile'] = '/profile/static/profilepic/'+filename
-
-        updateQuery('UPDATE '+session['type']+' SET profile = ? WHERE user_id= ?',[session['profile'],session['user_id'] if (session['type']=="USER_ACCOUNTS") else session['agent_id']])
-
+        type = session['type']
+        id = ""
+        if type=="AGENT_ACCOUNTS":
+            id = "agent_id"
+        else:
+            id = "user_id"
+        updateQuery('UPDATE '+session['type']+' SET profile = ? WHERE '+id+'= ?',[session['profile'],session[id]])
         return redirect('/profile')
     else:
         flash('Allowed media types are - png, jpg, jpeg, gif')

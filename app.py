@@ -12,5 +12,5 @@ if __name__ == '__main__':
     # app.run()
     from waitress import serve    
     serve(app, host="0.0.0.0", port=8080)
-    # server.serve(host = '0.0.0.0',port=5000)
+    # server.serve(host = '0.0.0.0',port=5000)  
     

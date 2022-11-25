@@ -18,7 +18,7 @@ def agent():
         jobs = selectQuery(['*'],'issue_db',['SOLVED','AGENT_ID'],[0,session.get("agent_id")])
         job_list = []
         if jobs:
-            job_list.append(jobs)   
+            job_list = jobs   
         return render_template('agent.html',job_list=job_list) 
     else:
         return redirect('/agent/login') 
@@ -36,6 +36,7 @@ def login():
         account = selectQuery(['*'],'agent_accounts',['EMAIL_ID','PASSWORD'],[email_id,password])
 
         if account:
+            account = account[0]
             session['loggedin'] = True
             session['agent_id'] = account['AGENT_ID']
             session['session_id'] = hash(account['EMAIL_ID']+str(hash(account['PASSWORD']+str(time.time()))))
@@ -43,7 +44,7 @@ def login():
             session['name'] = account['NAME']
             session['type'] = 'AGENT_ACCOUNTS'
             session['first_name']=account['FIRST_NAME']
-            session['last_name']=account['LAST_NAME']
+            session['last_name']=account['LAST_NAME']   
             session['pno'] = account["PNO"]
             session['profile'] = account["PROFILE"]
             session['location']=account["LOCATION"]

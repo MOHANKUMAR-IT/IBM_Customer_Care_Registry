@@ -16,10 +16,8 @@ def admin():
         issue = selectQuery(['*'],'issue_db',['solved'],[0])
         agents = []
         issues = []
-        if(account and isinstance(account,dict)):agents.append(account)
-        else: agents=account
-        if(issue and isinstance(issue,dict)):issues.append(issue)
-        else:issues=issue
+        agents =account
+        issues = issue
         print(agents)
         return render_template('admin.html',agents=agents,issues=issues)
     else:
@@ -67,7 +65,7 @@ def assignJobToAgent():
         updateQuery('UPDATE AGENT_ACCOUNTS SET pending_issues = pending_issues+1 WHERE agent_id=?',[agent_id])
         agentAcc = selectQuery(['email_id'],'agent_accounts',['agent_id'],[agent_id])
         issue = selectQuery(['*'],'issue_db',['ticket'],[ticket])
-
+    
         content="<h1>Hi Agent,<br>You have been assigned a task to solve Issue details=><br>Ticket:{}<br>Title:{} <br>Description: {} <br>User Email Id: {}<br>For further information contact user through his mail id.<br>Thanks and Regards,<br><i>Team TCE-Desk</i>".format(issue['TICKET'],issue['TITLE'],issue['DESCRIPTION'],issue['EMAIL_ID'])
         alertMail(agentAcc,"TCE Desk Tasks",content)
         alertMail(issue['EMAIL_ID'],"TCE Desk Agent Allotted","<h1>Dear User,Your Iussue with ticket:{} has been alloted Agent:{} .Issue will be cleared soon enough<br><br>Thanks and Regards,<br><i>Team TCE-Desk</i>".format(issue['TICKET'],issue['AGENT_ID']))

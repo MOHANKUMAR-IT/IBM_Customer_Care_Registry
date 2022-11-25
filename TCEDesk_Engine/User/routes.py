@@ -25,14 +25,14 @@ def landing_page():
         pending_issue_headings = []
         solved_issue_data = []
         if data:
-            pending_issue_data.append(data)
-            pending_issue_headings = data.keys()
+            pending_issue_data = data
+            pending_issue_headings = data[0].keys()
 
         data = selectQuery(['ticket','title','agent_id'],'issue_db',['email_id','solved'],[session['email_id'],1])
         solved_issue_headings = []
         if data:
-            solved_issue_data.append(data)
-            solved_issue_headings = data.keys()
+            solved_issue_data = data
+            solved_issue_headings = data[0].keys()
         print(pending_issue_data)
         return render_template("index.html",pending_issue_data=pending_issue_data,pending_issue_headings=pending_issue_headings,solved_issue_headings=solved_issue_headings,solved_issue_data=solved_issue_data)
     else:
@@ -49,12 +49,13 @@ def login():
         print(email_id,password)
 
         account = selectQuery(['*'],'user_accounts',['email_id','password'],[email_id,password])
-
-        if account:
+        print(account)
+        if len(account):
+            account = account[0]
             session['loggedin'] = True
             session['session_id'] = hash(account['EMAIL_ID']+str(hash(account['PASSWORD']+str(time.time()))))
             session['email_id'] = email_id
-            session['user_name'] = account['USER_NAME']
+            session['name'] = account['USER_NAME']
             session['password']=account['PASSWORD']
             session['location']=account["LOCATION"]
             session['profile']=account["PROFILE"]
